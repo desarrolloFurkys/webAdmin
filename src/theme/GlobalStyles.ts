@@ -7,9 +7,10 @@ const GlobalStyles = createGlobalStyle`
     padding: 0;
     font-size: 14px;
     line-height: 1.5;
+    font-family: var(--fk-font-ui), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     /* transition: all 0.50s linear; */
     color: ${({ theme }) => theme.colors.body.text};
-    background: ${({ theme }) => theme.colors.body.default};   
+    background: ${({ theme }) => theme.colors.body.default};
   }
 
   html {

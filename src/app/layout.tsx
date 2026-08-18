@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import type { PropsWithChildren } from "react";
-import { Public_Sans } from "next/font/google";
 // THEME PROVIDER
 import StyledComponentsRegistry from "@lib/registry";
 // CONTEXT PROVIDER
@@ -10,26 +9,26 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 import { ThemeProvider } from "theme";
+import { fkFontDisplay, fkFontPrice, fkFontUi } from "theme/furkysFonts";
 import NProgressBar from "@component/NProgress";
-
-const publicSans = Public_Sans({ subsets: ["latin"] });
+import FurkysChrome from "@component/furkys/FurkysChrome";
 
 export const metadata: Metadata = {
-  title: "Bonik - The Best React eCommerce Template",
+  title: "Furky's — Acaricia la felicidad",
   description:
-    "Bonik is a React Next.js E-commerce template. Build SEO friendly Online store, delivery app and Multi vendor store",
-  authors: [{ name: "UI-LIB", url: "https://ui-lib.com" }],
-  keywords: ["e-commerce", "e-commerce template", "next.js", "react", "bonik"]
+    "Furky's: arena y accesorios para gatos, con envío rápido a toda Colombia.",
+  authors: [{ name: "Furky's" }],
+  keywords: ["furky's", "arena para gatos", "accesorios para mascotas", "tienda para gatos"]
 };
 
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
-    <html lang="en">
-      <body className={publicSans.className}>
+    <html lang="es">
+      <body className={`${fkFontUi.variable} ${fkFontDisplay.variable} ${fkFontPrice.variable} ${fkFontUi.className}`}>
         <StyledComponentsRegistry>
           <CartProvider>
             <ThemeProvider>
-              {children}
+              <FurkysChrome>{children}</FurkysChrome>
               <NProgressBar />
             </ThemeProvider>
           </CartProvider>

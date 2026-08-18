@@ -1,13 +1,13 @@
 const gray = {
-  900: "#2B3445", // Main Text
-  800: "#373F50", // Paragraph
-  700: "#4B566B",
-  600: "#7D879C", // Low Priority form Title/Text
-  500: "#AEB4BE",
-  400: "#DAE1E7", // Border
-  300: "#E3E9EF",
-  200: "#F3F5F9", // Line Stroke
-  100: "#F6F9FC",
+  900: "#141210", // Furky's ink (main text)
+  800: "#3F3A33", // Paragraph
+  700: "#544E45",
+  600: "#857C6E", // Low Priority form Title/Text (muted)
+  500: "#A39A8A",
+  400: "#EAE5DC", // Border
+  300: "#EFEAE0",
+  200: "#F4EFE6", // Line Stroke
+  100: "#F9F6F0", // Surface
   white: "#FFFFFF"
 };
 
@@ -20,53 +20,53 @@ const textColor = {
 };
 
 const bodyColor = {
-  default: "#f8f9fa",
+  default: "#FFFFFF",
   paper: gray["white"],
   text: textColor.primary
 };
 
 const primaryColor = {
-  light: "#FFE1E6",
-  main: "#E94560",
-  dark: "#4F4CB6",
-  text: "#ffffff",
-  100: "#FCE9EC",
-  200: "#F8C7CF",
-  300: "#F07D90",
-  400: "#EC6178",
-  500: "#D23F57",
-  600: "#E63E58",
-  700: "#E3364E",
-  800: "#DF2E44",
-  900: "#D91F33"
+  light: "#FBEEE4",
+  main: "#E8501D",
+  dark: "#CF4517",
+  text: "#FBFAF7",
+  100: "#FBEEE4",
+  200: "#F5CDB6",
+  300: "#F0AC87",
+  400: "#EC8B58",
+  500: "#E8501D",
+  600: "#D8481A",
+  700: "#C74016",
+  800: "#B23813",
+  900: "#8F2C0F"
 };
 
 const secondaryColor = {
-  light: "rgba(15, 52, 96, 0.2)",
-  main: "rgba(15, 52, 96, 1)",
-  dark: "#303A47",
-  text: "#ffffff",
-  900: "#041533",
-  100: "#F3F6F9"
+  light: "#F1E7F9",
+  main: "#662681",
+  dark: "#54206A",
+  text: "#FFFFFF",
+  900: "#3E1650",
+  100: "#F1E7F9"
 };
 
-const dark = { main: "#222" };
+const dark = { main: "#141210" };
 
 const warningColor = {
-  main: "#FFCD4E",
+  main: "#D9A62B",
   text: textColor.primary
 };
 
 const errorColor = {
-  main: "#E94560",
-  light: "#FFE1E6",
+  main: "#E8501D",
+  light: "#FBEEE4",
   text: textColor.primary
 };
 
 const successColor = {
   text: textColor.primary,
-  main: "rgba(51, 208, 103, 1)",
-  light: "rgba(51, 208, 103, 0.15)"
+  main: "#1F8A5B",
+  light: "#EAF6EE"
 };
 
 const defaultColor = {
