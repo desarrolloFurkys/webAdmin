@@ -11,7 +11,6 @@ import "slick-carousel/slick/slick-theme.css";
 import { ThemeProvider } from "theme";
 import { fkFontDisplay, fkFontPrice, fkFontUi } from "theme/furkysFonts";
 import NProgressBar from "@component/NProgress";
-import FurkysChrome from "@component/furkys/FurkysChrome";
 
 export const metadata: Metadata = {
   title: "Furky's — Acaricia la felicidad",
@@ -28,7 +27,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
         <StyledComponentsRegistry>
           <CartProvider>
             <ThemeProvider>
-              <FurkysChrome>{children}</FurkysChrome>
+              {children}
               <NProgressBar />
             </ThemeProvider>
           </CartProvider>
