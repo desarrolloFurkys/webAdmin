@@ -4,28 +4,29 @@ import Link from "next/link";
 import styled from "styled-components";
 import useCart from "@hook/useCart";
 import useCartUI from "@hook/useCartUI";
+import type { CartPhase } from "@context/CartUIContext";
 import { formatCOP } from "@data/furkys-products";
 import FurkysPlaceholderImage from "./FurkysPlaceholderImage";
 
 const FREE_SHIPPING_THRESHOLD = 80000;
 const SHIPPING_COST = 12900;
 
-const Overlay = styled.div<{ $open: boolean }>`
+const Overlay = styled.div<{ $phase: CartPhase }>`
   position: fixed;
   inset: 0;
   z-index: 200;
-  pointer-events: ${({ $open }) => ($open ? "auto" : "none")};
+  pointer-events: ${({ $phase }) => ($phase === "open" ? "auto" : "none")};
 `;
 
-const Backdrop = styled.div<{ $open: boolean }>`
+const Backdrop = styled.div<{ $phase: CartPhase }>`
   position: absolute;
   inset: 0;
   background: rgba(20, 18, 16, 0.45);
-  opacity: ${({ $open }) => ($open ? 1 : 0)};
-  transition: opacity 0.32s ease;
+  opacity: ${({ $phase }) => ($phase === "open" || $phase === "reach" ? 1 : 0)};
+  transition: ${({ $phase }) => ($phase === "pull" ? "opacity 0.6s ease 0.1s" : "opacity 0.32s ease")};
 `;
 
-const Panel = styled.div<{ $open: boolean }>`
+const Panel = styled.div<{ $phase: CartPhase }>`
   position: absolute;
   top: 0;
   right: 0;
@@ -34,10 +35,50 @@ const Panel = styled.div<{ $open: boolean }>`
   max-width: 92vw;
   background: #ffffff;
   box-shadow: -10px 0 34px rgba(20, 18, 16, 0.16);
-  transform: translateX(${({ $open }) => ($open ? "0%" : "100%")});
-  transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: ${({ $phase }) =>
+    $phase === "open" || $phase === "reach" ? "translateX(0)" : "translateX(calc(100% + 120px))"};
+  transition: ${({ $phase }) =>
+    $phase === "pull"
+      ? "transform 0.62s cubic-bezier(0.55, 0, 0.75, 0.15)"
+      : "transform 0.38s cubic-bezier(0.4, 0, 0.2, 1)"};
   display: flex;
   flex-direction: column;
+`;
+
+const Paw = styled.div<{ $phase: CartPhase }>`
+  position: absolute;
+  top: 34%;
+  left: -80px;
+  width: 532px;
+  height: 180px;
+  z-index: 5;
+  pointer-events: none;
+  transform-origin: 100% 50%;
+  filter: drop-shadow(0 12px 18px rgba(20, 18, 16, 0.28));
+  opacity: ${({ $phase }) => ($phase === "reach" || $phase === "pull" ? 1 : 0)};
+  transform: ${({ $phase }) =>
+    $phase === "reach"
+      ? "translateX(0) rotate(0deg)"
+      : $phase === "pull"
+        ? "translateX(-6px) rotate(-2deg)"
+        : "translateX(620px) rotate(0deg)"};
+  transition: ${({ $phase }) =>
+    $phase === "reach"
+      ? "transform 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.1)"
+      : $phase === "pull"
+        ? "transform 0.2s ease"
+        : "none"};
+
+  img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    transform: scaleX(-1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    display: none;
+  }
 `;
 
 const PanelHeader = styled.div`
@@ -332,7 +373,7 @@ export default function FurkysCartDrawer() {
     state: { cart },
     dispatch
   } = useCart();
-  const { isOpen, close } = useCartUI();
+  const { isOpen, phase, close } = useCartUI();
 
   const subtotal = cart.reduce((total, item) => total + item.price * item.qty, 0);
   const shipping = cart.length === 0 || subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_COST;
@@ -345,9 +386,13 @@ export default function FurkysCartDrawer() {
   };
 
   return (
-    <Overlay $open={isOpen} aria-hidden={!isOpen}>
-      <Backdrop $open={isOpen} onClick={close} />
-      <Panel $open={isOpen}>
+    <Overlay $phase={phase} aria-hidden={!isOpen}>
+      <Backdrop $phase={phase} onClick={close} />
+      <Panel $phase={phase}>
+        <Paw $phase={phase} aria-hidden="true">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/assets/furkys/cat-paw.png" alt="" />
+        </Paw>
         <PanelHeader>
           <Title>Tu carrito</Title>
           <CloseButton onClick={close} aria-label="Cerrar carrito">
