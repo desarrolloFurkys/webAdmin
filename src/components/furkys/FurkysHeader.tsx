@@ -34,7 +34,8 @@ const Marquee = styled.div`
 `;
 
 const MarqueeTrack = styled.div`
-  display: inline-flex;
+  display: flex;
+  width: max-content;
   align-items: center;
   gap: 28px;
   animation: ${marquee} 32s linear infinite;
@@ -141,7 +142,7 @@ export default function FurkysHeader() {
     <Header>
       <Marquee>
         <MarqueeTrack>
-          {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((text, index) => (
+          {Array.from({ length: 8 }, () => MARQUEE_ITEMS).flat().map((text, index) => (
             <MarqueeItem key={index}>
               <span>{text}</span>
               <span aria-hidden="true">🐾</span>
