@@ -1,4 +1,5 @@
 import localFont from "next/font/local";
+import { Montserrat_Alternates } from "next/font/google";
 
 // Furky's brand type families, exposed as CSS vars (--fk-font-display/ui/price).
 export const fkFontDisplay = localFont({
@@ -19,5 +20,14 @@ export const fkFontPrice = localFont({
   src: "../assets/fonts/furkys/GillSansUltraBold.otf",
   weight: "900",
   variable: "--fk-font-price",
+  display: "swap"
+});
+
+// fkFontUi only ships the Bold weight locally — regular-weight body copy
+// (e.g. the footer's link list) loads Montserrat Alternates 400 from Google Fonts.
+export const fkFontUiRegular = Montserrat_Alternates({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--fk-font-ui-regular",
   display: "swap"
 });
