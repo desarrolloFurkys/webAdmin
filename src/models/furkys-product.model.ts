@@ -3,6 +3,17 @@ export interface FurkysProductVariant {
   price: number;
 }
 
+export interface FurkysProductDetails {
+  title: string;
+  intro: string;
+  bullets: { k: string; v: string }[];
+  closing: string;
+  steps: string[];
+  tipQ: string;
+  tipA: string;
+  care: string;
+}
+
 export interface FurkysProduct {
   id: number;
   brand: string;
@@ -21,4 +32,10 @@ export interface FurkysProduct {
   reviewCount: number;
   variants: FurkysProductVariant[];
   desc: string;
+  sku?: string;
+  images?: string[];
+  pricePerKg?: number;
+  subcat?: string;
+  variantLabel?: string;
+  details?: FurkysProductDetails;
 }
