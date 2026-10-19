@@ -106,25 +106,6 @@ const PrimaryCta = styled.a`
   }
 `;
 
-const SecondaryCta = styled.a`
-  background: transparent;
-  color: #fbfaf7;
-  border: 1.5px solid rgba(255, 255, 255, 0.3);
-  border-radius: 999px;
-  padding: 15px 30px;
-  font-family: var(--fk-font-ui);
-  font-weight: 600;
-  font-size: 16px;
-  cursor: pointer;
-  text-decoration: none;
-  transition: all 0.18s;
-
-  &:hover {
-    background: #fbfaf7;
-    color: #141210;
-  }
-`;
-
 const TrustRow = styled.div`
   display: flex;
   gap: 24px;
@@ -206,8 +187,7 @@ export default function Hero() {
               Arena y accesorios para tu gato, con la calidad de Furky's y envío rápido a toda Colombia.
             </Subtitle>
             <CtaRow>
-              <PrimaryCta href="#productos">Comprar arena</PrimaryCta>
-              <SecondaryCta href="#productos">Ver catálogo</SecondaryCta>
+              <PrimaryCta href="#productos">Comprar ahora</PrimaryCta>
             </CtaRow>
             <TrustRow>
               <TrustItem>
