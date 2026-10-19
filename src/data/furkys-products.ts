@@ -85,10 +85,6 @@ export function getFurkysProductBySlug(slug: string): FurkysProduct | undefined 
   return FURKYS_PRODUCTS.find((p) => p.slug === slug);
 }
 
-export function getFurkysRelatedProducts(excludeSlug: string, count = 4): FurkysProduct[] {
-  return FURKYS_PRODUCTS.filter((p) => p.slug !== excludeSlug).slice(0, count);
-}
-
 export function formatCOP(amount: number): string {
   return Math.round(amount).toLocaleString("es-CO");
 }

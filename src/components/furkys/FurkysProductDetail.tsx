@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import styled from "styled-components";
 import { FurkysProduct } from "models/furkys-product.model";
-import { FURKYS_ADDON, formatCOP } from "@data/furkys-products";
+import { FURKYS_PRODUCTS, formatCOP } from "@data/furkys-products";
 import useCart from "@hook/useCart";
 import useCartUI from "@hook/useCartUI";
 import FurkysPlaceholderImage from "./FurkysPlaceholderImage";
@@ -24,16 +24,10 @@ const ACCORDION_ITEMS = [
   }
 ];
 
-const REVIEWS = [
-  { initial: "M", name: "María G.", handle: "@mariag", avBg: "#E8501D", text: "Excelente calidad, mi gato quedó feliz. Llegó muy rápido." },
-  { initial: "J", name: "Julián R.", handle: "@julianr", avBg: "#662681", text: "Justo lo que buscaba, se nota que es un producto pensado para gatos." },
-  { initial: "C", name: "Camila P.", handle: "@camilap", avBg: "#1F8A5B", text: "Muy buena relación calidad-precio, lo recomiendo totalmente." }
-];
-
 const Wrapper = styled.main`
   max-width: 1240px;
   margin: 0 auto;
-  padding: 26px 24px 130px;
+  padding: 26px 24px 80px;
 `;
 
 const Breadcrumb = styled.div`
@@ -80,13 +74,22 @@ const ThumbRail = styled.div`
   }
 `;
 
-const Thumb = styled(FurkysPlaceholderImage)<{ $active?: boolean }>`
-  width: 100%;
-  height: 70px;
-  border: 2px solid ${({ $active, theme }) => ($active ? theme.colors.primary.main : theme.colors.gray[400])};
+const Thumb = styled.button<{ $active?: boolean }>`
+  width: 76px;
+  height: 76px;
+  padding: 0;
+  border: 2px solid ${({ $active, theme }) => ($active ? "#E8501D" : theme.colors.gray[400])};
   border-radius: 12px;
   cursor: pointer;
   flex: none;
+  overflow: hidden;
+  background: #f4efe6;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
 `;
 
 const MainImageWrap = styled.div`
@@ -119,15 +122,21 @@ const TagBadge = styled.span`
   letter-spacing: 0.04em;
 `;
 
-const MainImage = styled(FurkysPlaceholderImage)`
+const MainImageFrame = styled.div`
   width: 100%;
-  height: 520px;
-  border: 1px solid ${({ theme }) => theme.colors.gray[400]};
+  aspect-ratio: 1;
   border-radius: 24px;
+  background: #f4efe6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+`;
 
-  @media (max-width: 900px) {
-    height: 340px;
-  }
+const MainImagePhoto = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 `;
 
 const InfoCol = styled.div`
@@ -163,12 +172,12 @@ const Name = styled.h1`
   font-stretch: 125%;
   font-variation-settings: "wdth" 125;
   font-weight: 800;
-  font-size: 33px;
+  font-size: 34px;
   line-height: 0.98;
   text-transform: uppercase;
   margin: 0 0 6px;
   letter-spacing: -0.01em;
-  color: ${({ theme }) => theme.colors.gray[900]};
+  color: ${({ theme }) => theme.colors.secondary.main};
 `;
 
 const Tagline = styled.p`
@@ -182,64 +191,43 @@ const RatingRow = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 9px;
+  margin-bottom: 20px;
   color: ${({ theme }) => theme.colors.primary.main};
-  font-size: 15px;
+  font-size: 20px;
 `;
 
 const RatingScore = styled.span`
   font-family: var(--fk-font-ui);
   font-weight: 700;
-  font-size: 14px;
+  font-size: 18px;
   color: ${({ theme }) => theme.colors.gray[900]};
 `;
 
 const RatingCount = styled.span`
   font-family: var(--fk-font-ui);
-  font-size: 13px;
+  font-size: 14px;
   color: ${({ theme }) => theme.colors.gray[500]};
-`;
-
-const SoldRow = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  margin-bottom: 20px;
-  font-family: var(--fk-font-ui);
-  font-weight: 600;
-  font-size: 13px;
-  color: ${({ theme }) => theme.colors.primary.main};
-
-  &::before {
-    content: "";
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: ${({ theme }) => theme.colors.primary.main};
-  }
 `;
 
 const PriceRow = styled.div`
   display: flex;
-  align-items: flex-end;
-  gap: 12px;
+  align-items: baseline;
+  gap: 10px;
   margin: 4px 0 18px;
 `;
 
 const CurrentPrice = styled.span`
   font-family: var(--fk-font-price);
   font-weight: 800;
-  font-size: 38px;
+  font-size: 40px;
   color: ${({ theme }) => theme.colors.gray[900]};
   line-height: 1;
 `;
 
-const OldPrice = styled.span`
+const PricePerKg = styled.span`
   font-family: var(--fk-font-ui);
-  font-size: 18px;
+  font-size: 14px;
   color: ${({ theme }) => theme.colors.gray[500]};
-  text-decoration: line-through;
-  margin-bottom: 6px;
 `;
 
 const Desc = styled.p`
@@ -271,7 +259,7 @@ const VariantRow = styled.div`
   flex-wrap: wrap;
 `;
 
-const VariantButton = styled.button<{ $active: boolean }>`
+const VariantButton = styled(Link)<{ $active: boolean }>`
   border: 1.5px solid ${({ $active, theme }) => ($active ? theme.colors.gray[900] : theme.colors.gray[400])};
   border-radius: 12px;
   padding: 11px 18px;
@@ -283,6 +271,7 @@ const VariantButton = styled.button<{ $active: boolean }>`
   flex-direction: column;
   align-items: flex-start;
   gap: 1px;
+  text-decoration: none;
   background: ${({ $active, theme }) => ($active ? theme.colors.gray[900] : "#fff")};
   color: ${({ $active, theme }) => ($active ? "#fff" : theme.colors.gray[900])};
   transition: all 0.15s;
@@ -294,51 +283,87 @@ const VariantButton = styled.button<{ $active: boolean }>`
   }
 `;
 
-const AddonBlock = styled.div`
-  margin-bottom: 22px;
-`;
-
-const AddonRow = styled.div`
-  display: flex;
-  gap: 10px;
-  margin-top: 10px;
-  align-items: center;
-`;
-
-const AddonButton = styled.button<{ $active: boolean }>`
-  border: 1.5px solid ${({ $active, theme }) => ($active ? theme.colors.gray[900] : theme.colors.gray[400])};
-  background: ${({ $active, theme }) => ($active ? theme.colors.gray[900] : "#fff")};
-  color: ${({ $active, theme }) => ($active ? "#fff" : theme.colors.gray[900])};
-  border-radius: 12px;
-  padding: 10px 18px;
-  font-family: var(--fk-font-ui);
-  font-weight: 600;
-  font-size: 13.5px;
-  cursor: pointer;
-`;
-
-const AddonPreview = styled.div`
+const QtyAddRow = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-top: 10px;
-  background: ${({ theme }) => theme.colors.gray[100]};
-  border: 1px solid ${({ theme }) => theme.colors.gray[400]};
-  border-radius: 12px;
-  padding: 10px 12px;
+  margin-bottom: 12px;
 `;
 
-const AddonThumb = styled(FurkysPlaceholderImage)`
-  width: 44px;
-  height: 44px;
-  border-radius: 10px;
+const QtyStepper = styled.div`
+  display: flex;
+  align-items: center;
+  border: 1.5px solid ${({ theme }) => theme.colors.gray[400]};
+  border-radius: 12px;
+  overflow: hidden;
   flex: none;
 `;
 
-const AddonText = styled.div`
+const QtyButton = styled.button`
+  background: #fff;
+  border: none;
+  width: 40px;
+  height: 46px;
+  font-size: 19px;
+  cursor: pointer;
+  color: ${({ theme }) => theme.colors.gray[900]};
+  transition: background 0.15s;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.gray[100]};
+  }
+`;
+
+const QtyValue = styled.span`
+  width: 40px;
+  text-align: center;
   font-family: var(--fk-font-ui);
-  font-size: 12px;
-  color: ${({ theme }) => theme.colors.gray[700]};
+  font-weight: 600;
+  font-size: 15px;
+`;
+
+const AddToCartButton = styled.button`
+  flex: 1;
+  background: ${({ theme }) => theme.colors.primary.main};
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 13px;
+  font-family: var(--fk-font-ui);
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background 0.15s;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.primary.dark};
+  }
+`;
+
+const BuyNowButton = styled(Link)`
+  display: block;
+  width: 100%;
+  background: ${({ theme }) => theme.colors.gray[900]};
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  padding: 15px;
+  font-family: var(--fk-font-ui);
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  margin-bottom: 22px;
+  transition: background 0.18s;
+
+  &:hover {
+    background: #2a2420;
+  }
 `;
 
 const DeliveryBox = styled.div`
@@ -409,217 +434,138 @@ const AccordionBody = styled.p`
   margin: 0 0 16px;
 `;
 
-const RelatedSection = styled.section`
+const DetailsGrid = styled.section`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+  gap: 20px;
   padding: 56px 0 8px;
 `;
 
-const SectionTitle = styled.h2`
+const IntroCard = styled.div`
+  background: #fcf3ee;
+  border-radius: 20px;
+  padding: 28px;
+`;
+
+const UsageCard = styled.div`
+  background: #fff;
+  border: 1px solid #eae5dc;
+  border-radius: 20px;
+  padding: 28px;
+`;
+
+const CardTitle = styled.h2`
   font-family: var(--fk-font-display);
   font-stretch: 125%;
   font-variation-settings: "wdth" 125;
   font-weight: 800;
-  font-size: 28px;
+  font-size: 22px;
   text-transform: uppercase;
-  margin: 0 0 20px;
+  margin: 0 0 14px;
   letter-spacing: -0.01em;
   color: ${({ theme }) => theme.colors.gray[900]};
 `;
 
-const RelatedGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 18px;
-
-  @media (max-width: 900px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
+const CardIntro = styled.p`
+  font-family: var(--fk-font-ui);
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: ${({ theme }) => theme.colors.gray[700]};
+  margin: 0 0 18px;
 `;
 
-const RelatedCard = styled.div`
-  background: #fff;
-  border: 1px solid ${({ theme }) => theme.colors.gray[400]};
-  border-radius: 20px;
-  overflow: hidden;
+const BulletList = styled.ul`
+  list-style: none;
+  margin: 0 0 18px;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  transition: all 0.18s;
-
-  &:hover {
-    box-shadow: 0 14px 30px rgba(20, 18, 16, 0.1);
-    transform: translateY(-3px);
-  }
+  gap: 10px;
 `;
 
-const RelatedImageLink = styled(Link)`
-  display: block;
-`;
-
-const RelatedImage = styled(FurkysPlaceholderImage)`
-  width: 100%;
-  height: 160px;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.gray[400]};
-`;
-
-const RelatedBody = styled.div`
-  padding: 14px;
+const BulletItem = styled.li`
   display: flex;
-  flex-direction: column;
-  flex: 1;
-`;
-
-const RelatedBrand = styled.span`
+  gap: 10px;
   font-family: var(--fk-font-ui);
-  font-weight: 600;
-  font-size: 11px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: ${({ theme }) => theme.colors.gray[500]};
-`;
-
-const RelatedName = styled(Link)`
-  font-family: var(--fk-font-ui);
-  font-weight: 600;
   font-size: 14px;
-  margin: 3px 0 10px;
-  min-height: 34px;
-  line-height: 1.2;
-  color: ${({ theme }) => theme.colors.gray[900]};
-  text-decoration: none;
-  display: block;
+  line-height: 1.5;
+  color: ${({ theme }) => theme.colors.gray[700]};
+
+  svg {
+    flex: none;
+    margin-top: 3px;
+    color: ${({ theme }) => theme.colors.primary.main};
+  }
+
+  b {
+    color: ${({ theme }) => theme.colors.gray[900]};
+  }
 `;
 
-const RelatedFooter = styled.div`
-  margin-top: auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+const CardClosing = styled.p`
+  font-family: var(--fk-font-ui);
+  font-size: 14px;
+  font-style: italic;
+  color: ${({ theme }) => theme.colors.gray[600]};
+  margin: 0;
 `;
 
-const RelatedPrice = styled.span`
+const StepTitle = styled.h3`
   font-family: var(--fk-font-ui);
   font-weight: 700;
-  font-size: 19px;
+  font-size: 15px;
   color: ${({ theme }) => theme.colors.gray[900]};
+  margin: 0 0 14px;
 `;
 
-const RelatedAddButton = styled.button`
-  background: ${({ theme }) => theme.colors.gray[900]};
-  color: #fff;
-  border: none;
-  border-radius: 10px;
-  width: 36px;
-  height: 36px;
+const StepList = styled.ol`
+  list-style: none;
+  margin: 0 0 18px;
+  padding: 0;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.18s;
+  flex-direction: column;
+  gap: 14px;
+  counter-reset: step;
+`;
 
-  &:hover {
-    background: ${({ theme }) => theme.colors.primary.main};
-    transform: scale(1.06);
+const StepItem = styled.li`
+  display: flex;
+  gap: 12px;
+  font-family: var(--fk-font-ui);
+  font-size: 14px;
+  line-height: 1.5;
+  color: ${({ theme }) => theme.colors.gray[700]};
+
+  &::before {
+    counter-increment: step;
+    content: counter(step);
+    flex: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: ${({ theme }) => theme.colors.secondary.main};
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
   }
 `;
 
-const ReviewsSection = styled.section`
-  padding: 32px 0 8px;
-  border-top: 1px solid ${({ theme }) => theme.colors.gray[400]};
+const TipBox = styled.div`
+  margin-bottom: 14px;
 `;
 
-const ReviewsHeader = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 22px;
-  flex-wrap: wrap;
-  gap: 10px;
-`;
-
-const ReviewsSummary = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-`;
-
-const ReviewsScore = styled.span`
-  font-family: var(--fk-font-price);
-  font-weight: 900;
-  font-size: 24px;
-  color: ${({ theme }) => theme.colors.gray[900]};
-`;
-
-const ReviewsStars = styled.span`
+const TipQuestion = styled.p`
+  font-family: var(--fk-font-ui);
+  font-weight: 700;
+  font-size: 14px;
   color: ${({ theme }) => theme.colors.primary.main};
-  font-size: 16px;
-  letter-spacing: 2px;
+  margin: 0 0 4px;
 `;
 
-const ReviewsCount = styled.span`
-  font-family: var(--fk-font-ui);
-  font-size: 13px;
-  color: ${({ theme }) => theme.colors.gray[500]};
-`;
-
-const ReviewsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
-
-  @media (max-width: 900px) {
-    grid-template-columns: 1fr;
-  }
-`;
-
-const ReviewCard = styled.div`
-  background: #fff;
-  border: 1px solid ${({ theme }) => theme.colors.gray[400]};
-  border-radius: 18px;
-  padding: 18px;
-`;
-
-const ReviewHead = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 10px;
-`;
-
-const ReviewAvatar = styled.span<{ $bg: string }>`
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: ${({ $bg }) => $bg};
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--fk-font-ui);
-  font-weight: 700;
-  font-size: 14px;
-  flex: none;
-`;
-
-const ReviewName = styled.div`
-  font-family: var(--fk-font-ui);
-  font-weight: 600;
-  font-size: 13.5px;
-  color: ${({ theme }) => theme.colors.gray[900]};
-`;
-
-const ReviewHandle = styled.div`
-  font-family: var(--fk-font-ui);
-  font-size: 11.5px;
-  color: ${({ theme }) => theme.colors.gray[500]};
-`;
-
-const ReviewStars = styled.div`
-  color: #f5a623;
-  font-size: 14px;
-  letter-spacing: 2px;
-  margin-bottom: 8px;
-`;
-
-const ReviewText = styled.p`
+const TipAnswer = styled.p`
   font-family: var(--fk-font-ui);
   font-size: 13.5px;
   line-height: 1.5;
@@ -627,183 +573,50 @@ const ReviewText = styled.p`
   margin: 0;
 `;
 
-const StickyBar = styled.div`
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 55;
-  background: #fff;
-  border-top: 1px solid ${({ theme }) => theme.colors.gray[400]};
-  box-shadow: 0 -8px 24px rgba(20, 18, 16, 0.08);
-`;
-
-const StickyInner = styled.div`
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: 14px 24px;
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  flex-wrap: wrap;
-`;
-
-const StickyPrice = styled.div`
-  flex: none;
+const CareNote = styled.p`
   font-family: var(--fk-font-ui);
-  font-weight: 800;
-  font-size: 23px;
-  color: ${({ theme }) => theme.colors.gray[900]};
-  line-height: 1;
-`;
+  font-size: 13px;
+  color: ${({ theme }) => theme.colors.gray[600]};
+  margin: 0;
 
-const QtyStepper = styled.div`
-  display: flex;
-  align-items: center;
-  border: 1.5px solid ${({ theme }) => theme.colors.gray[400]};
-  border-radius: 12px;
-  overflow: hidden;
-  flex: none;
-`;
-
-const QtyButton = styled.button`
-  background: #fff;
-  border: none;
-  width: 40px;
-  height: 44px;
-  font-size: 19px;
-  cursor: pointer;
-  color: ${({ theme }) => theme.colors.gray[900]};
-  transition: background 0.15s;
-
-  &:hover {
-    background: ${({ theme }) => theme.colors.gray[100]};
+  b {
+    color: ${({ theme }) => theme.colors.gray[900]};
   }
-`;
-
-const QtyValue = styled.span`
-  width: 40px;
-  text-align: center;
-  font-family: var(--fk-font-ui);
-  font-weight: 600;
-  font-size: 15px;
-`;
-
-const AddToCartButton = styled.button`
-  flex: 1;
-  min-width: 180px;
-  max-width: 280px;
-  background: #fff;
-  color: ${({ theme }) => theme.colors.gray[900]};
-  border: 1.5px solid ${({ theme }) => theme.colors.gray[900]};
-  border-radius: 14px;
-  padding: 13px;
-  font-family: var(--fk-font-ui);
-  font-weight: 600;
-  font-size: 15px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  transition: background 0.15s;
-
-  &:hover {
-    background: ${({ theme }) => theme.colors.gray[100]};
-  }
-`;
-
-const BuyNowButton = styled(Link)`
-  flex: 1;
-  min-width: 180px;
-  max-width: 280px;
-  background: ${({ theme }) => theme.colors.gray[900]};
-  color: #fff;
-  border: none;
-  border-radius: 14px;
-  padding: 13px;
-  font-family: var(--fk-font-ui);
-  font-weight: 600;
-  font-size: 15px;
-  cursor: pointer;
-  text-align: center;
-  text-decoration: none;
-  transition: background 0.18s;
-
-  &:hover {
-    background: #2a2420;
-  }
-`;
-
-const SecureNote = styled.div`
-  flex: none;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: ${({ theme }) => theme.colors.gray[500]};
-  font-family: var(--fk-font-ui);
-  font-size: 11.5px;
 `;
 
 interface Props {
   product: FurkysProduct;
-  related: FurkysProduct[];
 }
 
-export default function FurkysProductDetail({ product, related }: Props) {
-  const [activeThumb, setActiveThumb] = useState(0);
-  const [activeVariant, setActiveVariant] = useState(0);
-  const [addonOn, setAddonOn] = useState(false);
-  const [openAccordion, setOpenAccordion] = useState<number | null>(null);
+export default function FurkysProductDetail({ product }: Props) {
   const [qty, setQty] = useState(1);
+  const [openAccordion, setOpenAccordion] = useState<number | null>(null);
+  const [activeThumb, setActiveThumb] = useState(0);
   const {
     state: { cart },
     dispatch
   } = useCart();
   const { open } = useCartUI();
 
-  const thumbs = [product.imgLabel, product.imgLabel2, product.imgLabel, product.imgLabel2];
-  const unitPrice = product.variants.length ? product.variants[activeVariant].price : product.price;
+  const variantLabel = product.variantLabel ?? product.cat;
+  const placeholders = [`Foto · Frente ${variantLabel}`, `Foto · Atrás ${variantLabel}`, `Rendimiento ${variantLabel}`];
+  const images = product.images?.length ? product.images : [];
+  const thumbCount = images.length || placeholders.length;
+
+  const presentations = product.subcat
+    ? FURKYS_PRODUCTS.filter((p) => p.subcat === product.subcat)
+    : [product];
 
   const addToCart = (qtyToAdd: number) => {
     const existingQty = cart.find((item) => item.id === product.id)?.qty ?? 0;
     dispatch({
       type: "CHANGE_CART_AMOUNT",
-      payload: { id: product.id, qty: existingQty + qtyToAdd, name: product.name, slug: product.slug, price: unitPrice }
+      payload: { id: product.id, qty: existingQty + qtyToAdd, name: product.name, slug: product.slug, price: product.price }
     });
-
-    if (addonOn) {
-      const existingAddonQty = cart.find((item) => item.id === FURKYS_ADDON.id)?.qty ?? 0;
-      dispatch({
-        type: "CHANGE_CART_AMOUNT",
-        payload: {
-          id: FURKYS_ADDON.id,
-          qty: existingAddonQty + 1,
-          name: FURKYS_ADDON.name,
-          slug: FURKYS_ADDON.slug,
-          price: FURKYS_ADDON.price
-        }
-      });
-    }
   };
 
   const handleAddToCart = () => {
     addToCart(qty);
-    open();
-  };
-
-  const handleRelatedAdd = (relatedProduct: FurkysProduct) => {
-    const existingQty = cart.find((item) => item.id === relatedProduct.id)?.qty ?? 0;
-    dispatch({
-      type: "CHANGE_CART_AMOUNT",
-      payload: {
-        id: relatedProduct.id,
-        qty: existingQty + 1,
-        name: relatedProduct.name,
-        slug: relatedProduct.slug,
-        price: relatedProduct.price
-      }
-    });
     open();
   };
 
@@ -816,20 +629,32 @@ export default function FurkysProductDetail({ product, related }: Props) {
 
       <Layout>
         <ThumbRail>
-          {thumbs.map((label, index) => (
-            <Thumb key={`${label}-${index}`} label={label} $active={activeThumb === index} onClick={() => setActiveThumb(index)} />
+          {Array.from({ length: thumbCount }, (_, index) => (
+            <Thumb key={index} $active={activeThumb === index} onClick={() => setActiveThumb(index)}>
+              {images[index] ? (
+                <img src={images[index]} alt={product.name} />
+              ) : (
+                <FurkysPlaceholderImage label={placeholders[index]} style={{ width: "100%", height: "100%" }} />
+              )}
+            </Thumb>
           ))}
         </ThumbRail>
 
         <MainImageWrap>
           <MainImageInner>
             {product.tag && <TagBadge>{product.tag}</TagBadge>}
-            <MainImage label={thumbs[activeThumb]} />
+            <MainImageFrame>
+              {images[activeThumb] ? (
+                <MainImagePhoto src={images[activeThumb]} alt={product.name} />
+              ) : (
+                <FurkysPlaceholderImage label={placeholders[activeThumb] ?? placeholders[0]} style={{ width: "100%", height: "100%" }} />
+              )}
+            </MainImageFrame>
           </MainImageInner>
         </MainImageWrap>
 
         <InfoCol>
-          <Badge>{product.badge}</Badge>
+          <Badge>{product.subcat ?? product.cat}</Badge>
           <Name>{product.name}</Name>
           <Tagline>{product.tagline}</Tagline>
           <RatingRow>
@@ -837,46 +662,60 @@ export default function FurkysProductDetail({ product, related }: Props) {
             <RatingScore>{product.rating.toFixed(1)}</RatingScore>
             <RatingCount>({product.reviewCount} reseñas)</RatingCount>
           </RatingRow>
-          <SoldRow>{product.sold} vendidos en las últimas 12 horas</SoldRow>
 
           <PriceRow>
-            <CurrentPrice>{formatCOP(unitPrice)}</CurrentPrice>
-            {product.oldPrice && <OldPrice>{formatCOP(product.oldPrice)}</OldPrice>}
+            <CurrentPrice>{formatCOP(product.price)}</CurrentPrice>
+            {product.pricePerKg && <PricePerKg>{formatCOP(product.pricePerKg)} / kg</PricePerKg>}
           </PriceRow>
 
           <Desc>{product.desc}</Desc>
 
-          {product.variants.length > 0 && (
+          {presentations.length > 1 && (
             <VariantBlock>
               <SectionLabel>Presentación</SectionLabel>
               <VariantRow>
-                {product.variants.map((variant, index) => (
-                  <VariantButton key={variant.label} $active={activeVariant === index} onClick={() => setActiveVariant(index)}>
-                    <span>{variant.label}</span>
-                    <span className="variant-price">{formatCOP(variant.price)}</span>
+                {presentations.map((presentation) => (
+                  <VariantButton
+                    key={presentation.slug}
+                    href={`/product/${presentation.slug}`}
+                    $active={presentation.slug === product.slug}
+                  >
+                    <span>{presentation.variantLabel}</span>
+                    <span className="variant-price">{formatCOP(presentation.price)}</span>
                   </VariantButton>
                 ))}
               </VariantRow>
             </VariantBlock>
           )}
 
-          <AddonBlock>
-            <SectionLabel>¿Agregar un juguete de regalo?</SectionLabel>
-            <AddonRow>
-              <AddonButton $active={addonOn} onClick={() => setAddonOn(true)}>
-                Sí, +{formatCOP(FURKYS_ADDON.price)}
-              </AddonButton>
-              <AddonButton $active={!addonOn} onClick={() => setAddonOn(false)}>
-                No, gracias
-              </AddonButton>
-            </AddonRow>
-            {addonOn && (
-              <AddonPreview>
-                <AddonThumb label="Foto · juguete de plumas" />
-                <AddonText>Mini Juguete de Plumas — se añadirá al carrito junto con tu compra.</AddonText>
-              </AddonPreview>
-            )}
-          </AddonBlock>
+          <QtyAddRow>
+            <QtyStepper>
+              <QtyButton onClick={() => setQty((q) => Math.max(1, q - 1))} aria-label="Disminuir cantidad">
+                −
+              </QtyButton>
+              <QtyValue>{qty}</QtyValue>
+              <QtyButton onClick={() => setQty((q) => q + 1)} aria-label="Aumentar cantidad">
+                +
+              </QtyButton>
+            </QtyStepper>
+            <AddToCartButton onClick={handleAddToCart}>
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2">
+                <circle cx="9" cy="21" r="1" />
+                <circle cx="20" cy="21" r="1" />
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+              </svg>
+              Añadir al carrito
+            </AddToCartButton>
+          </QtyAddRow>
+
+          <BuyNowButton
+            href="/checkout"
+            onClick={() => {
+              addToCart(qty);
+            }}
+          >
+            Comprar ahora
+          </BuyNowButton>
 
           <DeliveryBox>
             <DeliveryTitle>
@@ -916,94 +755,43 @@ export default function FurkysProductDetail({ product, related }: Props) {
         </InfoCol>
       </Layout>
 
-      <RelatedSection>
-        <SectionTitle>También te puede interesar</SectionTitle>
-        <RelatedGrid>
-          {related.map((relatedProduct) => (
-            <RelatedCard key={relatedProduct.id}>
-              <RelatedImageLink href={`/product/${relatedProduct.slug}`}>
-                <RelatedImage label={relatedProduct.imgLabel} />
-              </RelatedImageLink>
-              <RelatedBody>
-                <RelatedBrand>{relatedProduct.brand}</RelatedBrand>
-                <RelatedName href={`/product/${relatedProduct.slug}`}>{relatedProduct.name}</RelatedName>
-                <RelatedFooter>
-                  <RelatedPrice>{formatCOP(relatedProduct.price)}</RelatedPrice>
-                  <RelatedAddButton onClick={() => handleRelatedAdd(relatedProduct)} aria-label="Añadir al carrito">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.4">
-                      <path d="M12 5v14M5 12h14" />
-                    </svg>
-                  </RelatedAddButton>
-                </RelatedFooter>
-              </RelatedBody>
-            </RelatedCard>
-          ))}
-        </RelatedGrid>
-      </RelatedSection>
+      {product.details && (
+        <DetailsGrid>
+          <IntroCard>
+            <CardTitle>{product.details.title}</CardTitle>
+            <CardIntro>{product.details.intro}</CardIntro>
+            <BulletList>
+              {product.details.bullets.map((bullet) => (
+                <BulletItem key={bullet.k}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <path d="M20 6L9 17l-5-5" />
+                  </svg>
+                  <span>
+                    <b>{bullet.k}:</b> {bullet.v}
+                  </span>
+                </BulletItem>
+              ))}
+            </BulletList>
+            <CardClosing>{product.details.closing}</CardClosing>
+          </IntroCard>
 
-      <ReviewsSection>
-        <ReviewsHeader>
-          <SectionTitle style={{ margin: 0 }}>Opiniones y calificaciones</SectionTitle>
-          <ReviewsSummary>
-            <ReviewsScore>{product.rating.toFixed(1)}</ReviewsScore>
-            <ReviewsStars>★★★★★</ReviewsStars>
-            <ReviewsCount>({product.reviewCount} reseñas)</ReviewsCount>
-          </ReviewsSummary>
-        </ReviewsHeader>
-        <ReviewsGrid>
-          {REVIEWS.map((review) => (
-            <ReviewCard key={review.handle}>
-              <ReviewHead>
-                <ReviewAvatar $bg={review.avBg}>{review.initial}</ReviewAvatar>
-                <div>
-                  <ReviewName>{review.name}</ReviewName>
-                  <ReviewHandle>{review.handle}</ReviewHandle>
-                </div>
-              </ReviewHead>
-              <ReviewStars>★★★★★</ReviewStars>
-              <ReviewText>{review.text}</ReviewText>
-            </ReviewCard>
-          ))}
-        </ReviewsGrid>
-      </ReviewsSection>
-
-      <StickyBar>
-        <StickyInner>
-          <StickyPrice>{formatCOP(unitPrice)}</StickyPrice>
-          <QtyStepper>
-            <QtyButton onClick={() => setQty((q) => Math.max(1, q - 1))} aria-label="Disminuir cantidad">
-              −
-            </QtyButton>
-            <QtyValue>{qty}</QtyValue>
-            <QtyButton onClick={() => setQty((q) => q + 1)} aria-label="Aumentar cantidad">
-              +
-            </QtyButton>
-          </QtyStepper>
-          <AddToCartButton onClick={handleAddToCart}>
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="9" cy="21" r="1" />
-              <circle cx="20" cy="21" r="1" />
-              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
-            </svg>
-            Añadir al carrito
-          </AddToCartButton>
-          <BuyNowButton
-            href="/checkout"
-            onClick={() => {
-              addToCart(qty);
-            }}
-          >
-            Comprar ahora
-          </BuyNowButton>
-          <SecureNote>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <rect x="5" y="11" width="14" height="9" rx="2" />
-              <path d="M8 11V8a4 4 0 018 0v3" />
-            </svg>
-            Compra segura y protegida
-          </SecureNote>
-        </StickyInner>
-      </StickyBar>
+          <UsageCard>
+            <StepTitle>Modo de uso</StepTitle>
+            <StepList>
+              {product.details.steps.map((step) => (
+                <StepItem key={step}>{step}</StepItem>
+              ))}
+            </StepList>
+            <TipBox>
+              <TipQuestion>{product.details.tipQ}</TipQuestion>
+              <TipAnswer>{product.details.tipA}</TipAnswer>
+            </TipBox>
+            <CareNote>
+              <b>Conservación:</b> {product.details.care}
+            </CareNote>
+          </UsageCard>
+        </DetailsGrid>
+      )}
     </Wrapper>
   );
 }
