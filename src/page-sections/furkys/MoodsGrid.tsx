@@ -2,14 +2,13 @@
 
 import Link from "next/link";
 import styled from "styled-components";
-import { FURKYS_PRODUCTS, formatCOP } from "@data/furkys-products";
 import FurkysPlaceholderImage from "@component/furkys/FurkysPlaceholderImage";
 
 const MOODS = [
-  { id: 1, name: "Curioso", phrase: "Explorando cada rincón de la casa.", product: FURKYS_PRODUCTS[6], col: "1", row: "1 / span 2", ph: "Foto · gato curioso" },
-  { id: 2, name: "Consentido", phrase: "Solo lo mejor para él.", product: FURKYS_PRODUCTS[3], col: "2", row: "1", ph: "Foto · gato consentido" },
-  { id: 3, name: "Relajado", phrase: "Su refugio favorito para descansar.", product: FURKYS_PRODUCTS[7], col: "2", row: "2", ph: "Foto · gato relajado" },
-  { id: 4, name: "Jugetón", phrase: "Listo para la próxima aventura.", product: FURKYS_PRODUCTS[8], col: "1 / span 2", row: "3", ph: "Foto · gato jugando" }
+  { id: 1, name: "Curioso", phrase: "Explorando cada rincón de la casa.", col: "1", row: "1 / span 2", ph: "Foto · gato curioso" },
+  { id: 2, name: "Consentido", phrase: "Solo lo mejor para él.", col: "2", row: "1", ph: "Foto · gato consentido" },
+  { id: 3, name: "Relajado", phrase: "Su refugio favorito para descansar.", col: "2", row: "2", ph: "Foto · gato relajado" },
+  { id: 4, name: "Jugetón", phrase: "Listo para la próxima aventura.", col: "1 / span 2", row: "3", ph: "Foto · gato jugando" }
 ];
 
 const Section = styled.section`
@@ -23,16 +22,6 @@ const HeaderWrap = styled.div`
   margin-bottom: 22px;
 `;
 
-const Kicker = styled.span`
-  display: block;
-  font-family: var(--fk-font-ui);
-  font-weight: 600;
-  font-size: 13px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: ${({ theme }) => theme.colors.primary.main};
-`;
-
 const Title = styled.h2`
   font-family: var(--fk-font-display);
   font-stretch: 125%;
@@ -40,7 +29,7 @@ const Title = styled.h2`
   font-weight: 900;
   font-size: 32px;
   color: ${({ theme }) => theme.colors.secondary.main};
-  margin: 6px 0 6px;
+  margin: 0 0 6px;
   letter-spacing: -0.01em;
 `;
 
@@ -117,33 +106,58 @@ const MoodPhrase = styled.p`
   text-shadow: 0 1px 6px rgba(0, 0, 0, 0.55);
 `;
 
-const MoodPrice = styled.span`
+const TileScrim = styled.div`
+  position: absolute;
+  inset: 0;
+  background: rgba(20, 18, 16, 0);
+  opacity: 0;
+  transition: opacity 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  ${Tile}:hover & {
+    opacity: 1;
+    background: rgba(20, 18, 16, 0.35);
+  }
+`;
+
+const SeeMorePill = styled.span`
+  background: ${({ theme }) => theme.colors.primary.main};
+  color: #fff;
+  border-radius: 999px;
+  padding: 10px 22px;
   font-family: var(--fk-font-ui);
   font-weight: 700;
-  font-size: 18px;
-  color: #fff;
-  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.55);
-  margin-top: 8px;
-  display: inline-block;
+  font-size: 14px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.2s, transform 0.2s;
+
+  ${Tile}:hover & {
+    opacity: 1;
+    transform: translateY(0);
+  }
 `;
 
 export default function MoodsGrid() {
   return (
     <Section>
       <HeaderWrap>
-        <Kicker>Encuentra su mood</Kicker>
         <Title>¿Qué mood tiene tu michi hoy?</Title>
         <Subtitle>Un producto para cada una de sus personalidades.</Subtitle>
       </HeaderWrap>
       <Grid>
         {MOODS.map((mood) => (
-          <Tile key={mood.id} href={`/product/${mood.product.slug}`} $col={mood.col} $row={mood.row}>
+          <Tile key={mood.id} href="/#productos" $col={mood.col} $row={mood.row}>
             <TileImage label={mood.ph} dark />
             <TileOverlay>
               <MoodName>{mood.name}</MoodName>
               <MoodPhrase>{mood.phrase}</MoodPhrase>
-              <MoodPrice>{formatCOP(mood.product.price)}</MoodPrice>
             </TileOverlay>
+            <TileScrim>
+              <SeeMorePill>Ver más →</SeeMorePill>
+            </TileScrim>
           </Tile>
         ))}
       </Grid>
