@@ -12,7 +12,7 @@ import FurkysPlaceholderImage from "./FurkysPlaceholderImage";
 const ACCORDION_ITEMS = [
   {
     title: "Envíos y tiempos de entrega",
-    body: "Bogotá: 1–2 días hábiles con envío gratis. Resto de Colombia: 2–4 días hábiles desde $12.900 (gratis desde $80.000)."
+    body: "Bogotá: 1–2 días hábiles con envío gratis. Resto de Colombia: 2–4 días hábiles desde 12.900 (gratis desde 80.000)."
   },
   {
     title: "Cambios y devoluciones",
@@ -891,7 +891,7 @@ export default function FurkysProductDetail({ product, related }: Props) {
             <DeliveryText>
               Bogotá: 1–2 días hábiles · envío gratis.
               <br />
-              Resto de Colombia: 2–4 días hábiles · desde $12.900 (gratis desde $80.000).
+              Resto de Colombia: 2–4 días hábiles · desde 12.900 (gratis desde 80.000).
             </DeliveryText>
           </DeliveryBox>
 
