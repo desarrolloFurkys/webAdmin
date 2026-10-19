@@ -50,10 +50,10 @@ const Columns = styled.div`
 `;
 
 const ColumnTitle = styled.div`
-  font-family: var(--fk-font-ui);
-  font-weight: 800;
-  font-size: 14px;
-  letter-spacing: 0.06em;
+  font-family: var(--fk-font-display);
+  font-weight: 900;
+  font-size: 17px;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   color: #fff;
   margin-bottom: 14px;
@@ -63,10 +63,9 @@ const LinkList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  font-family: var(--fk-font-ui);
-  font-weight: 700;
-  font-size: 13.5px;
-  text-transform: uppercase;
+  font-family: var(--fk-font-ui-regular);
+  font-weight: 400;
+  font-size: 14px;
   color: #fff;
 `;
 
