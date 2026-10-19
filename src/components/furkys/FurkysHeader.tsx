@@ -12,12 +12,7 @@ const marquee = keyframes`
   to { transform: translateX(-50%); }
 `;
 
-const MARQUEE_ITEMS = [
-  "Envío gratis desde $80.000",
-  "Paga con Bold: tarjeta, PSE, Nequi y más",
-  "100% Natural y Biodegradable",
-  "Acaricia la felicidad 🐾"
-];
+const MARQUEE_ITEMS = ["Envío gratis para Bogotá en combos seleccionados", "Envíos a nivel nacional"];
 
 const Header = styled.header`
   position: sticky;
@@ -156,15 +151,15 @@ export default function FurkysHeader() {
           <Image
             src="/assets/furkys/furkys-logo-white.png"
             alt="Furky's · Acaricia la felicidad"
-            height={64}
-            width={220}
-            style={{ height: 52, width: "auto", objectFit: "contain", display: "block" }}
+            height={88}
+            width={300}
+            style={{ height: 76, width: "auto", objectFit: "contain", display: "block" }}
             priority
           />
         </LogoLink>
 
         <Nav>
-          <NavLink href="/" $active={pathname === "/"}>
+          <NavLink href="/#productos" $active={false}>
             FurkyShop
           </NavLink>
           <NavLink href="/guia" $active={pathname === "/guia" || pathname.startsWith("/guia/")}>
