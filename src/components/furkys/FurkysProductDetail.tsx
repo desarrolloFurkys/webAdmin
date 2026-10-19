@@ -611,7 +611,14 @@ export default function FurkysProductDetail({ product }: Props) {
     const existingQty = cart.find((item) => item.id === product.id)?.qty ?? 0;
     dispatch({
       type: "CHANGE_CART_AMOUNT",
-      payload: { id: product.id, qty: existingQty + qtyToAdd, name: product.name, slug: product.slug, price: product.price }
+      payload: {
+        id: product.id,
+        qty: existingQty + qtyToAdd,
+        name: product.name,
+        slug: product.slug,
+        price: product.price,
+        imgUrl: product.images?.[0]
+      }
     });
   };
 

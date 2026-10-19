@@ -183,6 +183,17 @@ const ItemThumb = styled(FurkysPlaceholderImage)`
   flex: none;
 `;
 
+const ItemThumbPhoto = styled.img`
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  padding: 6px;
+  background: #f4efe6;
+  border: 1px solid ${({ theme }) => theme.colors.gray[400]};
+  border-radius: 12px;
+  flex: none;
+`;
+
 const ItemDetails = styled.div`
   flex: 1;
   min-width: 0;
@@ -413,7 +424,11 @@ export default function FurkysCartDrawer() {
             <ItemList>
               {cart.map((item) => (
                 <ItemCard key={item.id}>
-                  <ItemThumb label={item.name} />
+                  {item.imgUrl ? (
+                    <ItemThumbPhoto src={item.imgUrl} alt={item.name} />
+                  ) : (
+                    <ItemThumb label={item.name} />
+                  )}
                   <ItemDetails>
                     <ItemName>{item.name}</ItemName>
                     <QtyRow>
