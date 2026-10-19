@@ -69,7 +69,11 @@ export const FURKYS_PRODUCTS: FurkysProduct[] = [
     imgLabel: "Foto · Arena para gatos 10 kg",
     imgLabel2: "Foto · Arena para gatos 10 kg (uso)",
     sku: "FRK-ARE-002",
-    images: [],
+    images: [
+      "/assets/furkys/products/arena-10kg-frente.png",
+      "/assets/furkys/products/arena-10kg-atras.png",
+      "/assets/furkys/products/arena-10kg-duracion.png"
+    ],
     badge: "100% Natural y Biodegradable",
     tagline: "Absorción superior y control de olores",
     sold: 52,
