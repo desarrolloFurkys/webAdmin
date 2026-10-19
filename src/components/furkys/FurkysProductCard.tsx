@@ -9,7 +9,7 @@ import useCartUI from "@hook/useCartUI";
 import FurkysPlaceholderImage from "./FurkysPlaceholderImage";
 
 const Card = styled.div`
-  flex: 0 0 260px;
+  width: 100%;
   padding-top: 8px;
 `;
 
@@ -20,7 +20,7 @@ const Inner = styled.div`
   display: flex;
   flex-direction: column;
   border: 1px solid ${({ theme }) => theme.colors.gray[400]};
-  width: 253px;
+  width: 100%;
   transition: box-shadow 0.18s, transform 0.18s;
 
   &:hover {
@@ -32,10 +32,30 @@ const Inner = styled.div`
 const ImageLink = styled(Link)`
   position: relative;
   display: block;
-  width: 253px;
+  width: 100%;
   height: 240px;
   border-radius: 20px 20px 0 0;
   overflow: hidden;
+  background: #f4efe6;
+`;
+
+const ProductPhoto = styled.img`
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 10px;
+  background: #f4efe6;
+`;
+
+const ProductPhotoHover = styled(ProductPhoto)`
+  opacity: 0;
+  transition: opacity 0.25s;
+
+  ${ImageLink}:hover & {
+    opacity: 1;
+  }
 `;
 
 const Tag = styled.span`
@@ -86,19 +106,19 @@ const RatingRow = styled.div`
   gap: 7px;
   margin-bottom: 14px;
   color: ${({ theme }) => theme.colors.primary.main};
-  font-size: 13px;
+  font-size: 20px;
 `;
 
 const RatingScore = styled.span`
   font-family: var(--fk-font-ui);
   font-weight: 700;
-  font-size: 13px;
+  font-size: 18px;
   color: ${({ theme }) => theme.colors.gray[900]};
 `;
 
 const RatingCount = styled.span`
   font-family: var(--fk-font-ui);
-  font-size: 12px;
+  font-size: 15px;
   color: ${({ theme }) => theme.colors.gray[500]};
 `;
 
@@ -171,7 +191,14 @@ export default function FurkysProductCard({ product }: Props) {
     <Card>
       <Inner>
         <ImageLink href={href}>
-          <FurkysPlaceholderImage label={product.imgLabel} style={{ position: "absolute", inset: 0 }} />
+          {product.images?.[0] ? (
+            <>
+              <ProductPhoto src={product.images[0]} alt={product.name} />
+              {product.images[1] && <ProductPhotoHover src={product.images[1]} alt={product.name} />}
+            </>
+          ) : (
+            <FurkysPlaceholderImage label={product.imgLabel} style={{ position: "absolute", inset: 0 }} />
+          )}
           {product.tag && (
             <Tag>
               <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
