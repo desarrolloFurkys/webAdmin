@@ -213,5 +213,5 @@ export function getFurkysRelatedProducts(excludeSlug: string, count = 4): Furkys
 }
 
 export function formatCOP(amount: number): string {
-  return `$${Math.round(amount).toLocaleString("es-CO")}`;
+  return Math.round(amount).toLocaleString("es-CO");
 }

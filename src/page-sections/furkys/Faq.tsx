@@ -5,7 +5,7 @@ import styled from "styled-components";
 import FurkysPlaceholderImage from "@component/furkys/FurkysPlaceholderImage";
 
 const FAQ_ITEMS = [
-  { q: "¿Cuánto tarda el envío?", a: "En Bogotá 1–2 días hábiles con envío gratis. Resto de Colombia 2–4 días hábiles desde $12.900 (gratis desde $80.000)." },
+  { q: "¿Cuánto tarda el envío?", a: "En Bogotá 1–2 días hábiles con envío gratis. Resto de Colombia 2–4 días hábiles desde 12.900 (gratis desde 80.000)." },
   { q: "¿Qué métodos de pago aceptan?", a: "Pagos seguros con Bold: tarjeta de crédito/débito, PSE, Nequi y más." },
   { q: "¿Puedo devolver un producto?", a: "Sí, tienes 5 días hábiles desde la entrega para solicitar cambios o devoluciones en productos sin abrir." },
   { q: "¿La arena es segura para gatitos?", a: "Sí, nuestra arena es 100% natural y segura para gatos de todas las edades." },
