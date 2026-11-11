@@ -9,7 +9,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 import { ThemeProvider } from "theme";
-import { fkFontDisplay, fkFontPrice, fkFontUi } from "theme/furkysFonts";
+import { fkFontDisplay, fkFontPrice, fkFontUi, fkFontUiRegular } from "theme/furkysFonts";
 import NProgressBar from "@component/NProgress";
 
 export const metadata: Metadata = {
@@ -23,7 +23,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="es">
-      <body className={`${fkFontUi.variable} ${fkFontDisplay.variable} ${fkFontPrice.variable} ${fkFontUi.className}`}>
+      <body
+        className={`${fkFontUi.variable} ${fkFontDisplay.variable} ${fkFontPrice.variable} ${fkFontUiRegular.variable} ${fkFontUi.className}`}
+      >
         <StyledComponentsRegistry>
           <CartProvider>
             <ThemeProvider>

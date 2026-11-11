@@ -1,18 +1,23 @@
 "use client";
 
 import { useState } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import FurkysPlaceholderImage from "@component/furkys/FurkysPlaceholderImage";
 
 const FAQ_ITEMS = [
-  { q: "¿Cuánto tarda el envío?", a: "En Bogotá 1–2 días hábiles con envío gratis. Resto de Colombia 2–4 días hábiles desde $12.900 (gratis desde $80.000)." },
+  { q: "¿Cuánto tarda el envío?", a: "En Bogotá 1–2 días hábiles con envío gratis. Resto de Colombia 2–4 días hábiles desde 12.900 (gratis desde 80.000)." },
   { q: "¿Qué métodos de pago aceptan?", a: "Pagos seguros con Bold: tarjeta de crédito/débito, PSE, Nequi y más." },
   { q: "¿Puedo devolver un producto?", a: "Sí, tienes 5 días hábiles desde la entrega para solicitar cambios o devoluciones en productos sin abrir." },
   { q: "¿La arena es segura para gatitos?", a: "Sí, nuestra arena es 100% natural y segura para gatos de todas las edades." },
   { q: "¿Tienen puntos de venta físicos?", a: "Por ahora vendemos exclusivamente en línea con envíos a toda Colombia." }
 ];
 
-const IG_THUMBS = [1, 2, 3, 4];
+const IG_REELS = [
+  { id: 1, ph: "Reel · Instagram 1", views: "12.4K" },
+  { id: 2, ph: "Reel · Instagram 2", views: "8.9K" },
+  { id: 3, ph: "Reel · Instagram 3", views: "15.1K" },
+  { id: 4, ph: "Reel · Instagram 4", views: "6.2K" }
+];
 
 const Section = styled.section`
   background: #fcf3ee;
@@ -43,19 +48,8 @@ const FaqPanel = styled.div`
   overflow: hidden;
 `;
 
-const FaqPanelTitle = styled.div`
-  padding: 26px 32px 6px;
-  text-align: center;
-  font-family: var(--fk-font-ui);
-  font-weight: 800;
-  font-size: 19px;
-  color: #fff;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-`;
-
 const FaqList = styled.div`
-  padding: 14px 32px 26px;
+  padding: 26px 32px;
 `;
 
 const FaqItem = styled.div`
@@ -188,23 +182,57 @@ const InstagramHandle = styled.span`
   color: ${({ theme }) => theme.colors.secondary.main};
 `;
 
-const IgGrid = styled.div`
-  background: ${({ theme }) => theme.colors.secondary.main};
-  border-radius: 24px;
-  padding: 22px;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 14px;
-
-  @media (max-width: 640px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
+const reelsMarquee = keyframes`
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
 `;
 
-const IgThumb = styled(FurkysPlaceholderImage)`
-  width: 100%;
-  aspect-ratio: 1;
-  border-radius: 12px;
+const IgStrip = styled.div`
+  background: ${({ theme }) => theme.colors.secondary.main};
+  border-radius: 24px;
+  padding: 22px 0;
+  overflow: hidden;
+`;
+
+const IgTrack = styled.div`
+  display: flex;
+  gap: 14px;
+  width: max-content;
+  animation: ${reelsMarquee} 40s linear infinite;
+`;
+
+const ReelCard = styled.div`
+  position: relative;
+  flex: 0 0 190px;
+  height: 330px;
+  border-radius: 16px;
+  overflow: hidden;
+`;
+
+const ReelImage = styled(FurkysPlaceholderImage)`
+  position: absolute;
+  inset: 0;
+`;
+
+const ReelGradient = styled.div`
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(20, 18, 16, 0.78), rgba(20, 18, 16, 0) 50%);
+  pointer-events: none;
+`;
+
+const ReelFooter = styled.div`
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #fff;
+  font-family: var(--fk-font-ui);
+  font-weight: 600;
+  font-size: 12.5px;
 `;
 
 export default function Faq() {
@@ -215,7 +243,6 @@ export default function Faq() {
       <Title>Preguntas de humanos</Title>
       <Inner>
         <FaqPanel>
-          <FaqPanelTitle>Preguntas Frecuentes</FaqPanelTitle>
           <FaqList>
             {FAQ_ITEMS.map((item, index) => {
               const isOpen = openIndex === index;
@@ -259,11 +286,24 @@ export default function Faq() {
           <InstagramHandle>furkys.co</InstagramHandle>
         </InstagramLink>
 
-        <IgGrid>
-          {IG_THUMBS.map((id) => (
-            <IgThumb key={id} label="Foto · Instagram" dark />
-          ))}
-        </IgGrid>
+        <IgStrip>
+          <IgTrack>
+            {[...IG_REELS, ...IG_REELS].map((reel, index) => (
+              <ReelCard key={`${reel.id}-${index}`}>
+                <ReelImage label={reel.ph} dark />
+                <ReelGradient />
+                <ReelFooter>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <rect x="3" y="3" width="18" height="18" rx="5" />
+                    <circle cx="12" cy="12" r="4.2" />
+                    <circle cx="17.6" cy="6.4" r="1.2" fill="currentColor" stroke="none" />
+                  </svg>
+                  {reel.views}
+                </ReelFooter>
+              </ReelCard>
+            ))}
+          </IgTrack>
+        </IgStrip>
       </Inner>
     </Section>
   );
