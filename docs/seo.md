@@ -21,6 +21,10 @@
 
 Ambas se incrustan al compilar: se definen antes del build.
 
+El build falla si `ALLOW_INDEXING=true` y `SITE_URL` no es un dominio público con `https://` (`src/lib/validateSeoEnv.ts`).
+
+Hosting: AWS Amplify. Las variables se definen en la consola de Amplify, en Variables de entorno de la rama, y se aplican en cada build. Tras cambiarlas hay que volver a desplegar.
+
 Con `ALLOW_INDEXING` apagado: `robots.txt` bloquea todo, el sitemap queda vacío y todas las páginas llevan `noindex`.
 
 ## Salir a producción
