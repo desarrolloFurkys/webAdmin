@@ -41,9 +41,9 @@ export const FURKYS_PRODUCTS: FurkysProduct[] = [
     imgLabel2: "Foto · Arena para gatos (uso)",
     sku: "FRK-ARE-001",
     images: [
-      "/assets/furkys/products/arena-3-5kg-frente.png",
-      "/assets/furkys/products/arena-3-5kg-atras.png",
-      "/assets/furkys/products/arena-3-5kg-duracion.png"
+      "/assets/furkys/products/arena-3-5kg-frente.webp",
+      "/assets/furkys/products/arena-3-5kg-atras.webp",
+      "/assets/furkys/products/arena-3-5kg-duracion.webp"
     ],
     badge: "100% Natural y Biodegradable",
     tagline: "Absorción superior y control de olores",
@@ -70,9 +70,9 @@ export const FURKYS_PRODUCTS: FurkysProduct[] = [
     imgLabel2: "Foto · Arena para gatos 10 kg (uso)",
     sku: "FRK-ARE-002",
     images: [
-      "/assets/furkys/products/arena-10kg-frente.png",
-      "/assets/furkys/products/arena-10kg-atras.png",
-      "/assets/furkys/products/arena-10kg-duracion.png"
+      "/assets/furkys/products/arena-10kg-frente.webp",
+      "/assets/furkys/products/arena-10kg-atras.webp",
+      "/assets/furkys/products/arena-10kg-duracion.webp"
     ],
     badge: "100% Natural y Biodegradable",
     tagline: "Absorción superior y control de olores",
