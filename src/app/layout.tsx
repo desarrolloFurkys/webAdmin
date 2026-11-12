@@ -11,7 +11,8 @@ import "slick-carousel/slick/slick-theme.css";
 import { ThemeProvider } from "theme";
 import { fkFontDisplay, fkFontPrice, fkFontUi, fkFontUiRegular } from "theme/furkysFonts";
 import NProgressBar from "@component/NProgress";
-import { SITE_NAME, SITE_URL } from "@lib/site";
+import { ALLOW_INDEXING, SITE_NAME, SITE_URL } from "@lib/site";
+import { NO_INDEX_ROBOTS } from "@lib/seo";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -35,7 +36,8 @@ export const metadata: Metadata = {
       "Arena ecológica de maíz y accesorios para gatos, con envío rápido a toda Colombia.",
     images: [{ url: "/assets/furkys/products/arena-3-5kg-frente.png", alt: "Arena para gatos Furky's" }]
   },
-  twitter: { card: "summary_large_image" }
+  twitter: { card: "summary_large_image" },
+  robots: ALLOW_INDEXING ? undefined : NO_INDEX_ROBOTS
 };
 
 export default function RootLayout({ children }: PropsWithChildren) {

@@ -1,8 +1,10 @@
 import type { MetadataRoute } from "next";
-import { SITE_URL } from "@lib/site";
+import { ALLOW_INDEXING, SITE_URL } from "@lib/site";
 import { FURKYS_PRODUCTS } from "@data/furkys-products";
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  if (!ALLOW_INDEXING) return [];
+
   const now = new Date();
 
   return [
