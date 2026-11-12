@@ -40,6 +40,8 @@ El código debe explicarse solo.
 
 ## 4. SEO
 
+Detalle de lo implementado, salida a producción y persistencia: `docs/seo.md`.
+
 Los archivos de SEO se mantienen junto con el contenido. Todo cambio que añada, mueva o elimine páginas o productos debe revisar y actualizar:
 
 | Archivo | Cuándo modificarlo |
