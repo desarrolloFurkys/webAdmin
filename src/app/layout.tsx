@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     title: "Furky's — Arena y accesorios para gatos en Colombia",
     description:
       "Arena ecológica de maíz y accesorios para gatos, con envío rápido a toda Colombia.",
-    images: [{ url: "/assets/furkys/products/arena-3-5kg-frente.png", alt: "Arena para gatos Furky's" }]
+    images: [{ url: "/assets/furkys/products/arena-3-5kg-frente.webp", alt: "Arena para gatos Furky's" }]
   },
   twitter: { card: "summary_large_image" },
   robots: ALLOW_INDEXING ? undefined : NO_INDEX_ROBOTS
