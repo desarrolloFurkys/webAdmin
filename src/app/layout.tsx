@@ -11,13 +11,33 @@ import "slick-carousel/slick/slick-theme.css";
 import { ThemeProvider } from "theme";
 import { fkFontDisplay, fkFontPrice, fkFontUi, fkFontUiRegular } from "theme/furkysFonts";
 import NProgressBar from "@component/NProgress";
+import { ALLOW_INDEXING, SITE_NAME, SITE_URL } from "@lib/site";
+import { NO_INDEX_ROBOTS } from "@lib/seo";
 
 export const metadata: Metadata = {
-  title: "Furky's — Acaricia la felicidad",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "Furky's — Arena y accesorios para gatos en Colombia",
+    template: "%s | Furky's"
+  },
   description:
-    "Furky's: arena y accesorios para gatos, con envío rápido a toda Colombia.",
-  authors: [{ name: "Furky's" }],
-  keywords: ["furky's", "arena para gatos", "accesorios para mascotas", "tienda para gatos"]
+    "Furky's: arena ecológica de maíz y accesorios para gatos, con envío rápido a toda Colombia.",
+  applicationName: SITE_NAME,
+  authors: [{ name: SITE_NAME }],
+  keywords: ["furky's", "arena para gatos", "arena de maíz", "accesorios para mascotas", "tienda para gatos"],
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    locale: "es_CO",
+    siteName: SITE_NAME,
+    url: "/",
+    title: "Furky's — Arena y accesorios para gatos en Colombia",
+    description:
+      "Arena ecológica de maíz y accesorios para gatos, con envío rápido a toda Colombia.",
+    images: [{ url: "/assets/furkys/products/arena-3-5kg-frente.png", alt: "Arena para gatos Furky's" }]
+  },
+  twitter: { card: "summary_large_image" },
+  robots: ALLOW_INDEXING ? undefined : NO_INDEX_ROBOTS
 };
 
 export default function RootLayout({ children }: PropsWithChildren) {
