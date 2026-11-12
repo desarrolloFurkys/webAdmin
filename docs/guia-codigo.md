@@ -1,4 +1,4 @@
-# Prácticas de código y commits
+# Guía de código
 
 ## 1. Nunca repetir código
 
@@ -28,17 +28,7 @@ El código debe explicarse solo.
 - No dejar código comentado. Para eso está git.
 - Un comentario solo se justifica ante una restricción externa que el código no puede expresar (un bug de una librería, un requisito legal). Debe ser excepcional y de una línea.
 
-## 3. Commits claros y puntuales
-
-- Un commit, un propósito. No mezclar refactor, funcionalidad y arreglos.
-- Formato: `tipo(alcance): descripción en español, en minúscula y sin punto final`.
-- Tipos: `feat`, `fix`, `refactor`, `perf`, `docs`, `chore`, `test`.
-- La descripción dice qué cambia, no cómo. Ejemplo: `feat(producto): añadir metadatos por producto`.
-- Cuerpo solo si el porqué no es evidente.
-- No añadir líneas `Co-Authored-By` ni otras atribuciones automáticas a commits ni a descripciones de PR.
-- No reescribir el historial de `main`.
-
-## 4. SEO
+## 3. SEO
 
 Detalle de lo implementado, salida a producción y persistencia: `docs/seo.md`.
 
